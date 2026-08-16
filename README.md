@@ -27,15 +27,33 @@ pathway of human transthyretin*, PNAS 115, E6201–E6208.
   color-based point extraction, binning, outlier filtering — see the paper's Methods section for
   the full procedure description).
 
-- `fit_final_N1_2.py`
+- `fit_final_mixture.py`
 
-  Fitting script producing the paper's main results table and overlay figure: the two-stage
-  reduced model fit (Stage 1 logistic tetramer depletion, Stage 2 flux-law drain into aggregate)
-  against the digitized data at all three temperatures.
+  Fitting script producing the paper's main results (Table 1, Figure 1): the two-stage reduced
+  model fit against the digitized data at all three temperatures. Stage 1 is a two-component
+  mixture, $x(t) = (1-a)\,x_{\rm slow}(t) + a\,x_{\rm add}(t)$, where $x_{\rm slow}$ is the
+  closed-form reduced-manifold logistic and $x_{\rm add}$ is a disclosed, not mechanistically
+  derived, added relaxation term; $T(0)$ is fixed at its exact physical value of 1 (not free or
+  bounded) at all three temperatures. Stage 2 fits $m(t)$ (the flux into the aggregate) against
+  this $x(t)$.
+
+  This supersedes an earlier single-logistic version of Stage 1 (no longer included here), which
+  required $T(0)$ to exceed 1 at two of the three temperatures to fit the data — the two-component
+  mixture was introduced specifically to remove that infeasibility.
+
+- `sdw_model_refit.py`
+
+  Refits Sun, Dyson & Wright's own model (the plain reversible two-step chain T⇌I⇌A, rate
+  constants $k_1,k_{-1},k_2,k_{-2}$) to the same digitized data used above, so that its RMSE can be
+  compared directly against `fit_final_mixture.py`'s, on identical data and an identical metric.
+  SDW's own paper reports fitted rate constants and van't Hoff free energies, not RMSE, so this
+  comparison does not exist anywhere else; it supports the fit-quality and AIC comparison reported
+  in the paper's "What this note adds beyond SDW's own model" section.
 
 ## Reproducing the results
 
 Run `digitize_sun2018_fig2.py` to regenerate the CSVs from the source figure (or use the CSVs
-directly), then run `fit_final_N1_2.py` to reproduce the paper's Table 1 and main figure.
+directly), then run `fit_final_mixture.py` to reproduce the paper's Table 1 and main figure, and
+`sdw_model_refit.py` to reproduce the SDW-model comparison.
 
-Requires: `numpy`, `scipy`, `pandas`, `matplotlib`.
+Requires: `numpy`, `scipy`, `matplotlib`.
