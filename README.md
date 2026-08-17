@@ -50,10 +50,31 @@ pathway of human transthyretin*, PNAS 115, E6201–E6208.
   comparison does not exist anywhere else; it supports the fit-quality and AIC comparison reported
   in the paper's "What this note adds beyond SDW's own model" section.
 
+- `n1_profile_scan.py`
+
+  Reproduces the $N_1$ profile scan described in the paper's Methods section: with $x(t)$ frozen
+  from Stage 1 at each temperature, Stage 2 is refit at each of a grid of trial exponents
+  $N_1 \in [0.5, 4.0]$, and the fit cost is reported as a function of $N_1$. This is the basis for
+  the paper's statement that the scan shows a clear interior minimum near $N_1\approx2$ at 310 K
+  and 277 K, but no interior minimum over the range scanned at 298 K.
+
+- `aic_comparison.py`
+
+  Reproduces the AIC comparison in "What this note adds beyond SDW's own model": both the
+  7-parameter mixture model and the 4-parameter SDW reversible-chain model are refit here
+  independently (not by reading RMSE/RSS from `fit_final_mixture.py`, `sdw_model_refit.py`, or
+  Table 1), and AIC $=2k - 2\ln\hat L$ is computed for each under the standard i.i.d.-Gaussian
+  assumption, pooling $T$, $I$, and $A$ together at each temperature. Reports the resulting
+  $\Delta$AIC in favor of the mixture model at each temperature.
+
 ## Reproducing the results
 
 Run `digitize_sun2018_fig2.py` to regenerate the CSVs from the source figure (or use the CSVs
-directly), then run `fit_final_mixture.py` to reproduce the paper's Table 1 and main figure, and
-`sdw_model_refit.py` to reproduce the SDW-model comparison.
+directly), then run `fit_final_mixture.py` to reproduce the paper's Table 1 and main figure,
+`sdw_model_refit.py` to reproduce the SDW-model comparison, `n1_profile_scan.py` to reproduce the
+$N_1$ profile scan, and `aic_comparison.py` to reproduce the AIC comparison.
+
+Not yet included here: the independent digitization-accuracy benchmark against Chatterjee et al.
+(2022, eLife 11:e73835) described in the paper's Methods section.
 
 Requires: `numpy`, `scipy`, `matplotlib`.
